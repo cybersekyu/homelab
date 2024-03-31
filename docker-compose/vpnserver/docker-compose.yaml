@@ -10,7 +10,7 @@ services:
       - SYS_MODULE
     restart: unless-stopped
     volumes:
-      - /home/death/vpnserver/config/vpn:/vpn
+      - ${HOME}/vpnserver/config/vpn:/vpn
       - /lib/modules:/lib/modules
     security_opt:
       - 'label:disable'
