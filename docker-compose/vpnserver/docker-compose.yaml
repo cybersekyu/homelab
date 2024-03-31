@@ -1,4 +1,4 @@
-version: "1"
+---
 services:
   vpn:
     container_name: vpn
