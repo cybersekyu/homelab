@@ -10,8 +10,8 @@ services:
       - TZ=${TZ}
       - VERSION=docker
     volumes:
-      - ${HOME}/mediaserver/config/plex/db:/config
-      - ${HOME}/mediaserver/config/plex/transcode:/transcode
+      - ${ROOT}/mediaserver/config/plex/db:/config
+      - ${ROOT}/mediaserver/config/plex/transcode:/transcode
       - ${HDDSTORAGE}/media/tvshows:/tvshows
       - ${HDDSTORAGE}/media/movies:/movies
       - ${HDDSTORAGE}/media/music:/music

@@ -10,7 +10,7 @@ services:
       - SYS_MODULE
     restart: unless-stopped
     volumes:
-      - ${HOME}/vpnserver/config/vpn:/vpn
+      - ${ROOT}/vpnserver/config/vpn:/vpn
       - /lib/modules:/lib/modules
     security_opt:
       - 'label:disable'
@@ -29,7 +29,7 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${HOME}/vpnserver/config/deluge:/config'
+      - ${ROOT}/vpnserver/config/deluge:/config'
       - ${HDDSTORAGE}/downloads:/downloads
     #ports:
     #  - '8112:8112' #uncomment if you are not using the VPN
