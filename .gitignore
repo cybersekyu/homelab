@@ -11,3 +11,5 @@ packer_cache/
 *.iso
 *.box
 *.ova
+
+**/.env
