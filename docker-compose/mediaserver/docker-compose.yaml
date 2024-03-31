@@ -5,17 +5,17 @@ services:
     container_name: plex
     network_mode: host
     environment:
-      - PUID=1001
-      - PGID=1002
-      - TZ=America/Los_Angeles
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
       - VERSION=docker
     volumes:
-      - /home/conquest/mediaserver/config/plex/db:/config
-      - /home/conquest/mediaserver/config/plex/transcode:/transcode
-      - /mnt/data/media/tvshows:/tvshows
-      - /mnt/data/media/movies:/movies
-      - /mnt/data/media/music:/music
-      - /mnt/data/media/anime:/anime
+      - ${HOME}/mediaserver/config/plex/db:/config
+      - ${HOME}/mediaserver/config/plex/transcode:/transcode
+      - ${HDDSTORAGE}/media/tvshows:/tvshows
+      - ${HDDSTORAGE}/media/movies:/movies
+      - ${HDDSTORAGE}/media/music:/music
+      - ${HDDSTORAGE}/media/anime:/anime
     restart: unless-stopped
 
 

@@ -25,12 +25,12 @@ services:
     image: 'linuxserver/deluge:latest'
     restart: unless-stopped
     environment:
-      - PUID=1001
-      - PGID=1002
-      - TZ=America/Los_Angeles
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
     volumes:
-      - /home/death/vpnserver/config/deluge:/config'
-      - /mnt/data/downloads:/downloads
+      - ${HOME}/vpnserver/config/deluge:/config'
+      - ${HDDSTORAGE}/downloads:/downloads
     #ports:
     #  - '8112:8112' #uncomment if you are not using the VPN
     network_mode: 'service:vpn' #comment/remove if you are not using the VPN
