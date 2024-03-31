@@ -36,3 +36,13 @@ services:
     network_mode: 'service:vpn' #comment/remove if you are not using the VPN
     depends_on:                 #comment/remove if you are not using the VPN
       - vpn                     #comment/remove if you are not using the VPN
+
+  agent:
+    image: portainer/agent:latest
+    container_name: portainer_agent
+    ports:
+      - "9001:9001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    restart: always
