@@ -1,0 +1,30 @@
+version: "1"
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1001
+      - PGID=1002
+      - TZ=America/Los_Angeles
+      - VERSION=docker
+    volumes:
+      - /home/conquest/mediaserver/config/plex/db:/config
+      - /home/conquest/mediaserver/config/plex/transcode:/transcode
+      - /mnt/data/media/tvshows:/tvshows
+      - /mnt/data/media/movies:/movies
+      - /mnt/data/media/music:/music
+      - /mnt/data/media/anime:/anime
+    restart: unless-stopped
+
+
+  agent:
+    image: portainer/agent:latest
+    container_name: portainer_agent
+    ports:
+      - "9001:9001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    restart: always
