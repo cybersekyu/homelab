@@ -1,8 +1,8 @@
 ---
 services:
   plex:
-    image: lscr.io/linuxserver/plex:latest
     container_name: plex
+    image: lscr.io/linuxserver/plex:latest
     network_mode: host
     environment:
       - PUID=${PUID}
@@ -20,10 +20,10 @@ services:
 
 
   agent:
-    image: portainer/agent:latest
     container_name: portainer_agent
+    image: portainer/agent:latest
     ports:
-      - "9001:9001"
+      - 9001:9001
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes

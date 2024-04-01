@@ -2,9 +2,9 @@
 services:
   vpn:
     container_name: vpn
-    image: 'dperson/openvpn-client:latest'
+    image: dperson/openvpn-client:latest
     environment:
-      - 'OTHER_ARGS= --mute-replay-warnings'
+      - OTHER_ARGS= --mute-replay-warnings
     cap_add:
       - net_admin
       - SYS_MODULE
@@ -13,11 +13,15 @@ services:
       - ${ROOT}/vpnserver/config/vpn:/vpn
       - /lib/modules:/lib/modules
     security_opt:
-      - 'label:disable'
+      - label:disable
     devices:
-      - '/dev/net/tun:/dev/net/tun'
+      - /dev/net/tun:/dev/net/tun
     ports:
-      - '8112:8112' #deluge web UI Port
+      - 8112:8112 #deluge web UI Port
+      - 9696:9696 #prowlarr port
+      - 9091:9091 #transmission
+      - 51413:51413 #transmission
+      - 51413:51413/udp #transmission udp
     command: '-f "" -r 192.168.68.0/24'
 
   deluge:
@@ -31,17 +35,45 @@ services:
     volumes:
       - ${ROOT}/vpnserver/config/deluge:/config'
       - ${HDDSTORAGE}/downloads:/downloads
-    #ports:
-    #  - '8112:8112' #uncomment if you are not using the VPN
-    network_mode: 'service:vpn' #comment/remove if you are not using the VPN
-    depends_on:                 #comment/remove if you are not using the VPN
-      - vpn                     #comment/remove if you are not using the VPN
+    network_mode: 'service:vpn' 
+    depends_on:                 
+      - vpn                     
+
+  prowlarr:
+    container_name: prowlarr
+    image: lscr.io/linuxserver/prowlarr:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${ROOT}/vpnserver/config/prowlarr:/config
+    restart: unless-stopped
+    network_mode: 'service:vpn' 
+    depends_on:                 
+      - vpn                     
+
+  transmission:
+    container_name: transmission
+    image: lscr.io/linuxserver/transmission:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - ${ROOT}/vpnserver/config/transmission:/config
+      - ${ROOT}/vpnserver/config/transmission/watch:/watch
+      - ${HDDSTORAGE}/downloads:/downloads
+    restart: unless-stopped
+    network_mode: 'service:vpn'
+    depends_on:
+      - vpn
 
   agent:
     image: portainer/agent:latest
     container_name: portainer_agent
     ports:
-      - "9001:9001"
+      - 9001:9001
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
