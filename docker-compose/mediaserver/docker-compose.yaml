@@ -18,6 +18,64 @@ services:
       - ${HDDSTORAGE}/media/anime:/anime
     restart: unless-stopped
 
+  sonarr:
+    container_name: sonarr
+    image: lscr.io/linuxserver/sonarr:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${ROOT}/mediaserver/config/sonarr:/config
+      - ${HDDSTORAGE}/media/anime:/anime
+      - ${HDDSTORAGE}/media/tvshows:/tvshows
+      - ${HDDSTORAGE}/downloads/complete:/downloads/complete
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${ROOT}/mediaserver/config/radarr:/config
+      - ${HDDSTORAGE}/downloads/complete:/downloads/complete
+      - ${HDDSTORAGE}/media/movies:/movies
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  bazarr:
+    container_name: bazarr
+    image: lscr.io/linuxserver/bazarr:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${ROOT}/mediaserver/config/bazarr:/config
+      - ${HDDSTORAGE}/media/movies:/movies #optional
+      - ${HDDSTORAGE}/media/tvshows:/tvshows #optional
+      - ${HDDSTORAGE}/media/anime:/anime
+    ports:
+      - 6767:6767
+    restart: unless-stopped    
+
+  overseerr:
+    container_name: overseerr
+    image: sctx/overseerr:latest
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=${TZ}
+    ports:
+      - 5055:5055
+    volumes:
+      - ${ROOT}/mediaserver/config/overseerr:/app/config
+    restart: unless-stopped
 
   agent:
     container_name: portainer_agent
