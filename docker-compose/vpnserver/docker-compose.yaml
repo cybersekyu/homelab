@@ -26,7 +26,7 @@ services:
 
   deluge:
     container_name: deluge
-    image: 'linuxserver/deluge:latest'
+    image: linuxserver/deluge:latest
     restart: unless-stopped
     environment:
       - PUID=${PUID}
@@ -53,21 +53,21 @@ services:
     depends_on:                 
       - vpn                     
 
-  transmission:
-    container_name: transmission
-    image: lscr.io/linuxserver/transmission:latest
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Madrid
-    volumes:
-      - ${ROOT}/vpnserver/config/transmission:/config
-      - ${ROOT}/vpnserver/config/transmission/watch:/watch
-      - ${HDDSTORAGE}/downloads:/downloads
-    restart: unless-stopped
-    network_mode: 'service:vpn'
-    depends_on:
-      - vpn
+  # transmission:
+  #   container_name: transmission
+  #   image: lscr.io/linuxserver/transmission:latest
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Europe/Madrid
+  #   volumes:
+  #     - ${ROOT}/vpnserver/config/transmission:/config
+  #     - ${ROOT}/vpnserver/config/transmission/watch:/watch
+  #     - ${HDDSTORAGE}/downloads:/downloads
+  #   restart: unless-stopped
+  #   network_mode: 'service:vpn'
+  #   depends_on:
+  #     - vpn
 
   agent:
     image: portainer/agent:latest
