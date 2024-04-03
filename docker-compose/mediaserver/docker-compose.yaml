@@ -15,7 +15,6 @@ services:
       - ${HDDSTORAGE}/media/tvshows:/tvshows
       - ${HDDSTORAGE}/media/movies:/movies
       - ${HDDSTORAGE}/media/music:/music
-      - ${HDDSTORAGE}/media/anime:/anime
     restart: unless-stopped
 
   sonarr:
@@ -27,9 +26,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${ROOT}/mediaserver/config/sonarr:/config
-      - ${HDDSTORAGE}/media/anime:/anime
       - ${HDDSTORAGE}/media/tvshows:/tvshows
-      - ${HDDSTORAGE}/downloads/complete:/downloads/complete
+      - ${HDDSTORAGE}/downloads:/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -43,7 +41,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${ROOT}/mediaserver/config/radarr:/config
-      - ${HDDSTORAGE}/downloads/complete:/downloads/complete
+      - ${HDDSTORAGE}/downloads:/downloads
       - ${HDDSTORAGE}/media/movies:/movies
     ports:
       - 7878:7878
@@ -58,9 +56,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${ROOT}/mediaserver/config/bazarr:/config
-      - ${HDDSTORAGE}/media/movies:/movies #optional
-      - ${HDDSTORAGE}/media/tvshows:/tvshows #optional
-      - ${HDDSTORAGE}/media/anime:/anime
+      - ${HDDSTORAGE}/media/movies:/movies 
+      - ${HDDSTORAGE}/media/tvshows:/tvshows 
     ports:
       - 6767:6767
     restart: unless-stopped    

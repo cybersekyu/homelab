@@ -1,16 +1,5 @@
 ---
 services:
-  overseerr:
-    container_name: overseerr
-    image: sctx/overseerr:latest
-    environment:
-      - LOG_LEVEL=debug
-      - TZ=${TZ}
-    ports:
-      - 5055:5055
-    volumes:
-      - ${ROOT}/utilityserver/config/overseerr:/app/config
-    restart: unless-stopped
 
   portainer-ce:
     container_name: portainer
