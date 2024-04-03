@@ -22,7 +22,7 @@ services:
       # - 9091:9091 #transmission
       # - 51413:51413 #transmission
       # - 51413:51413/udp #transmission udp
-    command: '-f "" -r 192.168.68.0/24'
+    command: '-f "" -r 192.168.1.0/24'
 
   deluge:
     container_name: deluge
@@ -33,7 +33,7 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${ROOT}/vpnserver/config/deluge:/config'
+      - ${ROOT}/vpnserver/config/deluge:/config
       - ${HDDSTORAGE}/downloads:/downloads
     network_mode: 'service:vpn' 
     depends_on:                 
