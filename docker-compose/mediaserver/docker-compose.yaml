@@ -28,6 +28,7 @@ services:
       - ${ROOT}/mediaserver/config/sonarr:/config
       - ${HDDSTORAGE}/media/tvshows:/tvshows
       - ${HDDSTORAGE}/downloads:/downloads
+      - ${HDDSTORAGE}/downloads/recycle:/recycle
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -41,8 +42,9 @@ services:
       - TZ=${TZ}
     volumes:
       - ${ROOT}/mediaserver/config/radarr:/config
-      - ${HDDSTORAGE}/downloads:/downloads
       - ${HDDSTORAGE}/media/movies:/movies
+      - ${HDDSTORAGE}/downloads:/downloads
+      - ${HDDSTORAGE}/downloads/recycle:/recycle
     ports:
       - 7878:7878
     restart: unless-stopped

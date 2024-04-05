@@ -1,6 +1,33 @@
 ---
 services:
+  heimdall:
+    image: lscr.io/linuxserver/heimdall:latest
+    container_name: heimdall
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${ROOT}/utilityserver/config/heimdall:/config
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
 
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      TZ: ${TZ}
+      WATCHTOWER_SCHEDULE: 0 30 18 * * *
+      WATCHTOWER_MONITOR_ONLY: "true"
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_NO_STARTUP_MESSAGE: "true"
+      WATCHTOWER_NOTIFICATIONS: "shoutrrr"
+      WATCHTOWER_NOTIFICATION_URL: "discord://token@channel"
+      
   portainer-ce:
     container_name: portainer
     image: portainer/portainer-ce:latest
