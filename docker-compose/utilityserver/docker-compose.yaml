@@ -21,7 +21,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       TZ: ${TZ}
-      WATCHTOWER_SCHEDULE: 0 30 3 * * 7
+      WATCHTOWER_SCHEDULE: 0 30 3 * * 6
       WATCHTOWER_MONITOR_ONLY: "true"
       WATCHTOWER_CLEANUP: "true"
       WATCHTOWER_NO_STARTUP_MESSAGE: "true"
