@@ -62,7 +62,7 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-      - APP_URL=https://192.168.1.40:6875
+      - APP_URL=http://192.168.1.40:6875
       - DB_HOST=bookstack_db
       - DB_PORT=3306
       - DB_USER=bookstack
