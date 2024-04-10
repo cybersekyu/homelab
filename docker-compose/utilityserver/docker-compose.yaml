@@ -28,6 +28,70 @@ services:
       WATCHTOWER_NOTIFICATIONS: "shoutrrr"
       WATCHTOWER_NOTIFICATION_URL: "discord://t${DISTOKEN}@${DISWEBHOOKID}"
       
+   librespeed:
+    container_name: librespeed
+    image: lscr.io/linuxserver/librespeed:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PASSWORD=${LIBREPASSWORD}
+    volumes:
+      - ${ROOT}/utilityserver/config/librespeed:/config
+    ports:
+      - 8080:80
+    restart: unless-stopped
+
+  smokeping:
+    container_name: smokeping
+    image: lscr.io/linuxserver/smokeping:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${ROOT}/utilityserver/config/smokeping:/config
+      - ${ROOT}/utilityserver/config/smokeping/data:/data
+    ports:
+      - 8088:80
+    restart: unless-stopped
+
+  bookstack:
+    container_name: bookstack
+    image: lscr.io/linuxserver/bookstack
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - APP_URL=https://bookstack.example.com
+      - DB_HOST=bookstack_db
+      - DB_PORT=3306
+      - DB_USER=bookstack
+      - DB_PASS=${DBPASS}
+      - DB_DATABASE=bookstackapp
+    volumes:
+      - ${ROOT}/utilityserver/config/bookstack_app_data:/config
+    ports:
+      - 6875:80
+    restart: unless-stopped
+    depends_on:
+      - bookstack_db
+      
+  bookstack_db:
+    image: lscr.io/linuxserver/mariadb
+    container_name: bookstack_db
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - MYSQL_ROOT_PASSWORD=${DBPASS}
+      - TZ=${TZ}
+      - MYSQL_DATABASE=bookstackapp
+      - MYSQL_USER=bookstack
+      - MYSQL_PASSWORD=${DBPASS}
+    volumes:
+      - ${ROOT}/utilityserver/config/bookstack_db_data:/config
+    restart: unless-stopped
+
+
   portainer-ce:
     container_name: portainer
     image: portainer/portainer-ce:latest
