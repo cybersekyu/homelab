@@ -27,6 +27,7 @@ services:
       WATCHTOWER_NO_STARTUP_MESSAGE: "true"
       WATCHTOWER_NOTIFICATIONS: "shoutrrr"
       WATCHTOWER_NOTIFICATION_URL: "discord://${DISTOKEN}@${DISWEBHOOKID}"
+    restart: unless-stopped
       
   librespeed:
     container_name: librespeed
