@@ -28,7 +28,7 @@ services:
       WATCHTOWER_NOTIFICATIONS: "shoutrrr"
       WATCHTOWER_NOTIFICATION_URL: "discord://${DISTOKEN}@${DISWEBHOOKID}"
       
-   librespeed:
+  librespeed:
     container_name: librespeed
     image: lscr.io/linuxserver/librespeed:latest
     environment:
