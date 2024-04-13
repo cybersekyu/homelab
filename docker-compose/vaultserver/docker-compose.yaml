@@ -28,8 +28,10 @@ services:
     container_name: nginx-test
     image: nginx
     labels:
-      - traefik.http.routers.nginx.rule=Host(`nginx.sabaody.com`)
+      - traefik.enable=true
+      - traefik.http.routers.nginx.rule=Host(`nginxtest.sabaody.com`)
       - traefik.http.routers.nginx.tls.certresolver=cloudflare
+      - traefik.http.routers.nginx.entrypoints=websecure
 
   agent:
     container_name: portainer_agent
