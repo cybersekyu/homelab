@@ -1,0 +1,42 @@
+---
+services:
+  traefik:
+    container_name: traefik
+    image: traefik
+    volumes:
+      - ${ROOT}/traefik/letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - CLOUDFLARE_EMAIL=${CF_EMAIL}
+      - CLOUDFLARE_API_KEY=${CF_APIKEY}
+    command:
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.cloudflare.acme.dnschallenge=true
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.cloudflare.acme.email=email@example.com
+      - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
+    restart: unless-stopped 
+
+  nginx:
+    container_name: nginx-test
+    image: nginx
+    labels:
+      - traefik.http.routers.nginx.rule=Host(`nginx.sabaody.com`)
+      - traefik.http.routers.nginx.tls.certresolver=cloudflare
+
+  agent:
+    container_name: portainer_agent
+    image: portainer/agent:latest
+    ports:
+      - 9001:9001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    restart: always
