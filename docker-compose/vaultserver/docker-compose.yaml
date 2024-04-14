@@ -33,7 +33,7 @@ services:
       - traefik.enable=true
       - traefik.http.routers.nginx.rule=Host(`nginxtest.sabaody.xyz`)
       - traefik.http.routers.nginx.tls.certresolver=cloudflare
-      - traefik.http.routers.nginx.entrypoints=web
+      - traefik.http.routers.nginx.entrypoints=websecure
 
   agent:
     container_name: portainer_agent
