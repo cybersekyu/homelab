@@ -2,36 +2,38 @@
 services:
   traefik:
     container_name: traefik
-    image: traefik
+    image: traefik:latest
     volumes:
       - ${ROOT}/vaultserver/config/traefik/letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
       - 80:80
-      - 443:443
-    environment:
-      - CLOUDFLARE_EMAIL=${CF_EMAIL}
-      - CLOUDFLARE_API_KEY=${CF_APIKEY}
+    #   - 443:443
+    # environment:
+    #   - CLOUDFLARE_EMAIL=${CF_EMAIL}
+    #   - CLOUDFLARE_API_KEY=${CF_APIKEY}
     command:
+      - --log.level=DEBUG
       - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
-      - --entrypoints.web.http.redirections.entryPoint.to=websecure
-      - --entrypoints.web.http.redirections.entryPoint.scheme=https
-      - --entrypoints.websecure.address=:443
-      - --certificatesresolvers.cloudflare.acme.dnschallenge=true
-      - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
-      - --certificatesresolvers.cloudflare.acme.email=${CF_EMAIL}
-      - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
-      - --certificatesresolvers.cloudflare.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      # - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      # - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      # - --entrypoints.websecure.address=:443
+      # - --certificatesresolvers.cloudflare.acme.dnschallenge=true
+      # - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+      # - --certificatesresolvers.cloudflare.acme.email=${CF_EMAIL}
+      # - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
+      # - --certificatesresolvers.cloudflare.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
     
   nginx:
     container_name: nginx-test
     image: nginx
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nginx.rule=Host(`nginxtest.sabaody.com`)
-      - traefik.http.routers.nginx.tls.certresolver=cloudflare
-      - traefik.http.routers.nginx.entrypoints=websecure
+      - traefik.http.routers.nginx.rule=Host(`nginxtest.sabaody.xyz`)
+      # - traefik.http.routers.nginx.tls.certresolver=cloudflare
+      - traefik.http.routers.nginx.entrypoints=web
 
   agent:
     container_name: portainer_agent
