@@ -26,9 +26,12 @@ services:
   #     - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
   #     # - --certificatesresolvers.cloudflare.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
     
-  # nginx:
-  #   container_name: nginx-test
-  #   image: nginx
+  nginx:
+    container_name: nginx-test
+    image: nginx:latest
+    ports:
+      - 80:80
+    restart: always
   #   labels:
   #     - traefik.enable=true
   #     - traefik.http.routers.nginx.rule=Host(`testtest.${DNSNAME}`)
@@ -36,28 +39,7 @@ services:
   #     - traefik.http.routers.nginx.entrypoints=websecure
 
   
-  # traefik:
-  #   image: "traefik:v2.11"
-  #   container_name: "traefik"
-  #   command:
-  #     #- "--log.level=DEBUG"
-  #     - "--api.insecure=true"
-  #     - "--providers.docker=true"
-  #     - "--providers.docker.exposedbydefault=false"
-  #     - "--entrypoints.web.address=:80"
-  #   ports:
-  #     - "80:80"
-  #     - "8080:8080"
-  #   volumes:
-  #     - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
-  whoami:
-    image: "traefik/whoami"
-    container_name: "simple-service"
-    # labels:
-    #   - "traefik.enable=true"
-    #   - "traefik.http.routers.whoami.rule=Host(`whoami.${DNSNAME}`)"
-    #   - "traefik.http.routers.whoami.entrypoints=web"
 
   agent:
     container_name: portainer_agent
