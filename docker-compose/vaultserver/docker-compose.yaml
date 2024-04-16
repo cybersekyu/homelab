@@ -18,7 +18,7 @@ services:
       - --api.insecure=true
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
-      - --entrypoints.web.address=:80
+      # - --entrypoints.web.address=:80
       # - --entrypoints.web.http.redirections.entryPoint.to=websecure
       # - --entrypoints.web.http.redirections.entryPoint.scheme=https
       - --entrypoints.websecure.address=:443
@@ -41,7 +41,7 @@ services:
       - PGID=${PGID}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nginx.rule=Host(`simpletest.${DNSNAME}`)
+      - traefik.http.routers.nginx.rule=Host(`simpletest.${DNSNAME}`) && PathPrefix(`/nginx`)
       - traefik.http.routers.nginx.entrypoints=websecure
       - traefik.http.routers.nginx.tls.certresolver=cloudflare
 
