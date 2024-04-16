@@ -9,19 +9,24 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 8080:8080
     environment:
       - CLOUDFLARE_EMAIL=${CF_EMAIL}
       - CLOUDFLARE_API_KEY=${CF_APIKEY}
     command:
       - --log.level=DEBUG
+      - --api.insecure=true
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
-      - --entrypoints.web.http.redirections.entryPoint.to=websecure
-      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      # - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      # - --entrypoints.web.http.redirections.entryPoint.scheme=https
       - --entrypoints.websecure.address=:443
       - --certificatesresolvers.cloudflare.acme.dnschallenge=true
       - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.delayBeforeCheck=0
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.0.0.1:53
       - --certificatesresolvers.cloudflare.acme.email=${CF_EMAIL}
       - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
       # - --certificatesresolvers.cloudflare.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
@@ -29,17 +34,16 @@ services:
   nginx:
     container_name: nginx-test
     image: nginx:latest
-    # ports:
-    #   - 9966:80
-    restart: always
+    depends_on:
+      - traefik
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nginx.rule=Host(`testtest.${DNSNAME}`)
-      - traefik.http.routers.nginx.tls.certresolver=cloudflare
+      - traefik.http.routers.nginx.rule=Host(`simpletest.${DNSNAME}`)
       - traefik.http.routers.nginx.entrypoints=websecure
-
-  
-
+      - traefik.http.routers.nginx.tls.certresolver=cloudflare
 
   agent:
     container_name: portainer_agent
