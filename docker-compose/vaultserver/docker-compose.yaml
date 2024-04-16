@@ -48,8 +48,7 @@ services:
       - traefik.http.routers.nginx.tls.certresolver=cloudflare
       - traefik.tls.stores.default.defaultgeneratedcert.resolver=cloudflare
       - traefik.tls.stores.default.defaultgeneratedcert.domain.main=${DNSNAME}
-      - traefik.tls.stores.default.defaultgeneratedcert.domain.sans=*.${DNSNAME}
-
+   
   agent:
     container_name: portainer_agent
     image: portainer/agent:latest
