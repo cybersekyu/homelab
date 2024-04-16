@@ -46,6 +46,9 @@ services:
       - traefik.http.routers.nginx.rule=Host(`simpletest.${DNSNAME}`)
       - traefik.http.routers.nginx.entrypoints=websecure
       - traefik.http.routers.nginx.tls.certresolver=cloudflare
+      - traefik.tls.stores.default.defaultgeneratedcert.resolver=cloudflare
+      - traefik.tls.stores.default.defaultgeneratedcert.domain.main=${DNSNAME}
+      - traefik.tls.stores.default.defaultgeneratedcert.domain.sans=*.${DNSNAME}
 
   agent:
     container_name: portainer_agent
