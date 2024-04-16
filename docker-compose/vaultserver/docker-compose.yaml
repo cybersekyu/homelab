@@ -39,6 +39,8 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
+    volumes:
+      - ${ROOT}/vaultserver/config/nginx/html:/nginx
     labels:
       - traefik.enable=true
       - traefik.http.routers.nginx.rule=Host(`simpletest.${DNSNAME}`) && PathPrefix(`/nginx`)
