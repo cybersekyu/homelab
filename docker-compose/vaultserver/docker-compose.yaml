@@ -40,10 +40,10 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
     volumes:
-      - ${ROOT}/vaultserver/config/nginx/html:/nginx
+      - ${ROOT}/vaultserver/config/nginx/html:/usr/share/nginx/html
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nginx.rule=Host(`simpletest.${DNSNAME}`) && PathPrefix(`/nginx`)
+      - traefik.http.routers.nginx.rule=Host(`simpletest.${DNSNAME}`)
       - traefik.http.routers.nginx.entrypoints=websecure
       - traefik.http.routers.nginx.tls.certresolver=cloudflare
 
