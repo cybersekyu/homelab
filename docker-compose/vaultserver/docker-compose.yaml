@@ -52,6 +52,9 @@ services:
       - traefik.enable=true
       - traefik.http.routers.nginx.rule=Host(`simpletesttest.${DNSNAME}`)
       - traefik.http.routers.nginx.entrypoints=websecure
+      - traefik.tls.stores.default.defaultgeneratedcert.resolver=letsencrypt
+      - traefik.tls.stores.default.defaultgeneratedcert.domain.main=${DNSNAME}
+      - traefik.tls.stores.default.defaultgeneratedcert.domain.sans=simpletesttest.${DNSNAME}
    
   agent:
     container_name: portainer_agent
