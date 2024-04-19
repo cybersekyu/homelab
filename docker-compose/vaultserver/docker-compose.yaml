@@ -35,8 +35,8 @@ services:
       # Set up the TLS configuration for our websecure listener
       - --entrypoints.websecure.http.tls=true
       - --entrypoints.websecure.http.tls.certResolver=letsencrypt
-      - --entrypoints.websecure.http.tls.domain[0].main=${DNSNAME}
-      - --entrypoints.websecure.http.tls.domain[0].sans=simpletesttest.${DNSNAME}
+      - --entrypoints.websecure.http.tls.domains[0].main=${DNSNAME}
+      - --entrypoints.websecure.http.tls.domains[0].sans=simpletesttest.${DNSNAME}
 
   nginx:
     container_name: nginx-test
