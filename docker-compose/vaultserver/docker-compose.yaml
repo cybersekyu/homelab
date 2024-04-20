@@ -36,26 +36,29 @@ services:
       - --entrypoints.websecure.http.tls=true
       - --entrypoints.websecure.http.tls.certResolver=letsencrypt
       - --entrypoints.websecure.http.tls.domains[0].main=${DNSNAME}
-      - --entrypoints.websecure.http.tls.domains[0].sans=simpletesttest.${DNSNAME}
+      - --entrypoints.websecure.http.tls.domains[0].sans=*.${DNSNAME}
 
   nginx:
     container_name: nginx-test
     image: nginx:latest
-    depends_on:
-      - traefik
-    # environment:
-    #   - PUID=${PUID}
-    #   - PGID=${PGID}
-    # volumes:
-    #   - ${ROOT}/vaultserver/config/nginx/html:/usr/share/nginx/html
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nginx.rule=Host(`simpletesttest.${DNSNAME}`)
+      - traefik.http.routers.nginx.rule=Host(`nginxtest.${DNSNAME}`)
       - traefik.http.routers.nginx.entrypoints=websecure
       - traefik.tls.stores.default.defaultgeneratedcert.resolver=letsencrypt
       - traefik.tls.stores.default.defaultgeneratedcert.domain.main=${DNSNAME}
-      - traefik.tls.stores.default.defaultgeneratedcert.domain.sans=simpletesttest.${DNSNAME}
+      - traefik.tls.stores.default.defaultgeneratedcert.domain.sans=*.${DNSNAME}
    
+   whoami:
+    image: "traefik/whoami"
+    container_name: "simple-service"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.${DNSNAME}`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+
+
+
   agent:
     container_name: portainer_agent
     image: portainer/agent:latest
