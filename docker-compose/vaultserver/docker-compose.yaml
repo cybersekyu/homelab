@@ -26,7 +26,7 @@ services:
       - --certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.0.0.1:53
       - --certificatesresolvers.letsencrypt.acme.email=${CF_EMAIL}
       - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
-      - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      # - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
       # Set up an insecure listener that redirects all traffic to TLS      
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
