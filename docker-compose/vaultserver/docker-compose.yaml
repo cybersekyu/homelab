@@ -49,13 +49,13 @@ services:
       - traefik.tls.stores.default.defaultgeneratedcert.domain.main=${DNSNAME}
       - traefik.tls.stores.default.defaultgeneratedcert.domain.sans=*.${DNSNAME}
    
-   whoami:
-    image: "traefik/whoami"
-    container_name: "simple-service"
+  whoami:
+    image: traefik/whoami
+    container_name: simple-service
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.${DNSNAME}`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - traefik.enable=true
+      - traefik.http.routers.whoami.rule=Host(`whoami.${DNSNAME}`)
+      - traefik.http.routers.whoami.entrypoints=websecure
 
 
 
