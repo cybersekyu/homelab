@@ -15,7 +15,7 @@ services:
       - CF_DNS_API_TOKEN=${CF_APIKEY}
     command:
       - --log.level=DEBUG
-      - --api.insecure=true
+      - --api.insecure=false
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       # Set up LetsEncrypt
@@ -37,6 +37,10 @@ services:
       - --entrypoints.websecure.http.tls.certResolver=letsencrypt
       - --entrypoints.websecure.http.tls.domains[0].main=${DNSNAME}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DNSNAME}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.whoami.rule=Host(`traefik.${DNSNAME}`)
+      - traefik.http.routers.whoami.entrypoints=websecure
 
   nginx:
     container_name: nginx-test
@@ -45,19 +49,25 @@ services:
       - traefik.enable=true
       - traefik.http.routers.nginx.rule=Host(`nginxtest.${DNSNAME}`)
       - traefik.http.routers.nginx.entrypoints=websecure
-      - traefik.tls.stores.default.defaultgeneratedcert.resolver=letsencrypt
-      - traefik.tls.stores.default.defaultgeneratedcert.domain.main=${DNSNAME}
-      - traefik.tls.stores.default.defaultgeneratedcert.domain.sans=*.${DNSNAME}
-   
+
   whoami:
-    image: traefik/whoami
     container_name: simple-service
+    image: traefik/whoami
     labels:
       - traefik.enable=true
       - traefik.http.routers.whoami.rule=Host(`whoami.${DNSNAME}`)
       - traefik.http.routers.whoami.entrypoints=websecure
-
-
+  
+  vaultwarden:
+    container_name: vaultwarden
+    image: vaultwarden/server:latest
+    volumes:
+      - ${ROOT}/vaultserver/config/vaultwarden:/data
+    restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nginx.rule=Host(`vault.${DNSNAME}`)
+      - traefik.http.routers.nginx.entrypoints=websecure
 
   agent:
     container_name: portainer_agent
