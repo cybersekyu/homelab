@@ -15,7 +15,7 @@ services:
       - CF_DNS_API_TOKEN=${CF_APIKEY}
     command:
       - --log.level=DEBUG
-      - --api.insecure=false
+      - --api.dashboard=true
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       # Set up LetsEncrypt
@@ -39,8 +39,8 @@ services:
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DNSNAME}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.whoami.rule=Host(`traefik.${DNSNAME}`)
-      - traefik.http.routers.whoami.entrypoints=websecure
+      - traefik.http.routers.api.rule=Host(`traefik.${DNSNAME}`)
+      - traefik.http.routers.api.entrypoints=websecure
 
   nginx:
     container_name: nginx-test
@@ -66,8 +66,8 @@ services:
     restart: always
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nginx.rule=Host(`vault.${DNSNAME}`)
-      - traefik.http.routers.nginx.entrypoints=websecure
+      - traefik.http.routers.vaultwarden.rule=Host(`vault.${DNSNAME}`)
+      - traefik.http.routers.vaultwarden.entrypoints=websecure
 
   agent:
     container_name: portainer_agent
