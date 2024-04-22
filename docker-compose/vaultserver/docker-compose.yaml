@@ -61,6 +61,8 @@ services:
   vaultwarden:
     container_name: vaultwarden
     image: vaultwarden/server:latest
+    env_file:
+      - vaultwarden-var.env
     volumes:
       - ${ROOT}/vaultserver/config/vaultwarden:/data
     restart: always
