@@ -80,4 +80,4 @@ networks:
     driver: bridge
     internal: true
   external:
-    driver: brige
+    driver: bridge
