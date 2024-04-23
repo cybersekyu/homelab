@@ -41,26 +41,15 @@ services:
       - traefik.enable=true
       - traefik.http.routers.api.rule=Host(`traefik.${DNSNAME}`)
       - traefik.http.routers.api.entrypoints=websecure
+    networks:
+      - internal
+      - external
 
-  nginx:
-    container_name: nginx-test
-    image: nginx:latest
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.nginx.rule=Host(`nginxtest.${DNSNAME}`)
-      - traefik.http.routers.nginx.entrypoints=websecure
-
-  whoami:
-    container_name: simple-service
-    image: traefik/whoami
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.whoami.rule=Host(`whoami.${DNSNAME}`)
-      - traefik.http.routers.whoami.entrypoints=websecure
-  
   vaultwarden:
     container_name: vaultwarden
     image: vaultwarden/server:latest
+    depends_on:
+      - traefik
     env_file:
       - vaultwarden-var.env
     volumes:
@@ -70,6 +59,8 @@ services:
       - traefik.enable=true
       - traefik.http.routers.vaultwarden.rule=Host(`vault.${DNSNAME}`)
       - traefik.http.routers.vaultwarden.entrypoints=websecure
+    networks:
+      - internal
 
   agent:
     container_name: portainer_agent
@@ -80,3 +71,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     restart: always
+    networks:
+      - internal
+      - external
+
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  external:
+    driver: brige
