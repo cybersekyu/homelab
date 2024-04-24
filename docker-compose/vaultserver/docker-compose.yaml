@@ -42,8 +42,9 @@ services:
       - traefik.http.routers.api.rule=Host(`traefik.${DNSNAME}`)
       - traefik.http.routers.api.entrypoints=websecure
     networks:
-      - default
       - internal
+      - default
+    
 
   vaultwarden:
     container_name: vaultwarden
