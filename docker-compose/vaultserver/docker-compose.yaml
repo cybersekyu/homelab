@@ -74,7 +74,7 @@ services:
     networks:
       - default
 
-networks
+networks:
   internal:
     driver: bridge
     internal: true
