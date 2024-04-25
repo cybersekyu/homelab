@@ -37,14 +37,9 @@ services:
       - --entrypoints.websecure.http.tls.certResolver=letsencrypt
       - --entrypoints.websecure.http.tls.domains[0].main=${DNSNAME}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DNSNAME}
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.api.rule=Host(`traefik.${DNSNAME}`)
-      - traefik.http.routers.api.entrypoints=websecure
     networks:
       - internal
       - default
-    
 
   vaultwarden:
     container_name: vaultwarden
@@ -56,12 +51,13 @@ services:
     volumes:
       - ${ROOT}/vaultserver/config/vaultwarden:/data
     restart: always
+    networks:
+      - internal
     labels:
       - traefik.enable=true
       - traefik.http.routers.vaultwarden.rule=Host(`vault.${DNSNAME}`)
       - traefik.http.routers.vaultwarden.entrypoints=websecure
-    networks:
-      - internal
+
 
   agent:
     container_name: portainer_agent
@@ -71,10 +67,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
-    restart: always
     networks:
       - default
-
+    restart: always
   
 networks:
   internal:
