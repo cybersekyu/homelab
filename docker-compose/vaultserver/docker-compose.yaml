@@ -42,7 +42,7 @@ services:
       - traefik.http.routers.api.rule=Host(`traefik.${DNSNAME}`)
       - traefik.http.routers.api.entrypoints=websecure
     networks:
-      - internal_test
+      - internal
       - default
     
 
@@ -61,7 +61,7 @@ services:
       - traefik.http.routers.vaultwarden.rule=Host(`vault.${DNSNAME}`)
       - traefik.http.routers.vaultwarden.entrypoints=websecure
     networks:
-      - internal_test
+      - internal
 
   agent:
     container_name: portainer_agent
@@ -76,4 +76,7 @@ services:
       - default
 
   
-
+networks:
+  internal:
+    name: internal_test
+    external: true
