@@ -37,13 +37,14 @@ services:
       - --entrypoints.websecure.http.tls.domains[0].main=${DNSNAME}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DNSNAME}
     networks:
-      - isolated_net
-      - default
+      - internal_net
+      - external_net
     labels:
       - traefik.enable=true
       - traefik.http.routers.dashboard.rule=Host(`traefik.${DNSNAME}`)
       - traefik.http.routers.dashboard.entrypoints=websecure
       - traefik.http.routers.dashboard.service=api@internal
+    restart: unless-stopped
 
   vaultwarden:
     container_name: vaultwarden
@@ -53,16 +54,16 @@ services:
     env_file:
       - vaultwarden-var.env
     volumes:
-      - ${ROOT}/vaultserver/config/vaultwarden:/data
-    restart: always
+      - ${ROOT}/vaultserver/config/vaultwarden:/data    
     networks:
-      - isolated_net
+      - internal_net
     labels:
       - traefik.enable=true
       - traefik.docker.network=isolated_net
       - traefik.http.routers.vaultwarden.rule=Host(`vault.${DNSNAME}`)
       - traefik.http.routers.vaultwarden.entrypoints=websecure
       - traefik.http.services.vaultwarden.loadbalancer.server.port=80
+    restart: unless-stopped
    
   agent:
     container_name: portainer_agent
@@ -73,9 +74,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     networks:
-      - default
+      - external_net
     restart: always
 
 networks:
-  isolated_net:
-    external: true
+  internal_net:
+    driver: bridge
+    internal: true
+  external_net:
+    driver: bridge
+  # isolated_net:
+  #   external: true
