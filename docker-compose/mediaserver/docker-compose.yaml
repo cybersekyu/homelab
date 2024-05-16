@@ -76,6 +76,22 @@ services:
       - ${ROOT}/mediaserver/config/overseerr:/app/config
     restart: unless-stopped
 
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      TZ: ${TZ}
+      WATCHTOWER_SCHEDULE: 0 30 3 * * 6
+      WATCHTOWER_MONITOR_ONLY: "false"
+      WATCHTOWER_ROLLING_RESTART: "true"
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_NO_STARTUP_MESSAGE: "true"
+      WATCHTOWER_NOTIFICATIONS: "shoutrrr"
+      WATCHTOWER_NOTIFICATION_URL: "discord://${DISTOKEN}@${DISWEBHOOKID}"
+    restart: unless-stopped
+
   agent:
     container_name: portainer_agent
     image: portainer/agent:latest
