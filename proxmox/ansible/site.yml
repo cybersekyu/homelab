@@ -1,2 +1,2 @@
 # file: site.yml
-- import_playbook: playbooks/ubuntu.yml
+- import_playbook: playbooks/pihole.yml
