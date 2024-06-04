@@ -13,7 +13,6 @@
   apt:
     autoremove: yes
     autoclean: yes
-    clean: yes
 
 - name: check for reboot required
   register: reboot_required_file
