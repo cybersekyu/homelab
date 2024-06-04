@@ -1,7 +1,7 @@
 # file: roles/common/tasks/main.yml
 - name: Gathering package facts
   package_facts:
-  manager: apt
+    manager: auto
   tags: init,pihole-up
 
 - name: Running Distribution Upgrade
