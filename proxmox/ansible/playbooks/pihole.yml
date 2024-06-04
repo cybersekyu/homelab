@@ -4,4 +4,4 @@
   hosts: pihole          # This matches [pihole] in production/hosts
   become: yes            # Become SUDO
   roles:
-    - common
+    - role: common
