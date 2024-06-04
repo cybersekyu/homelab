@@ -1,3 +1,13 @@
 # file: roles/common/tasks/main.yml
+- name: Gathering package facts
+  package_facts:
+  manager: apt
+  tags: init,pihole-up
+
 - name: Running Distribution Upgrade
   include_tasks: dist-upgrade.yml
+  tags: init
+
+- name: update pihole
+  include_tasks: pihole-update.yml
+  tags: init,pihole-up
