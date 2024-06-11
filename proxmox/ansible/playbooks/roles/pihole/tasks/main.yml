@@ -1,0 +1,4 @@
+# file: roles/phiole/tasks/main.yml
+- name: update pihole
+  include_tasks: pihole-update.yml
+  tags: pihole-up

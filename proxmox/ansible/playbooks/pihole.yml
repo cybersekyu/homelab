@@ -5,3 +5,4 @@
   become: yes            # Become SUDO
   roles:
     - common
+    - pihole

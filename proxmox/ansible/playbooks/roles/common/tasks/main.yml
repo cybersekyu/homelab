@@ -7,7 +7,3 @@
 - name: Running Distribution Upgrade
   include_tasks: dist-upgrade.yml
   tags: init
-
-- name: update pihole
-  include_tasks: pihole-update.yml
-  tags: init,pihole-up
