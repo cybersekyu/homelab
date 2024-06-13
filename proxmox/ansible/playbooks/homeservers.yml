@@ -1,0 +1,16 @@
+# file: playbooks/homeservers.yml
+- name: Managing Pihole Host
+  gather_facts: yes      # Gather system facts about the hosts
+  hosts: pihole          # This matches [pihole] in production/hosts
+  become: yes            # Become SUDO
+  roles:
+    - common
+    - pihole
+
+- name: Managing Servers Host
+  gather_facts: yes      # Gather system facts about the hosts
+  hosts: servers          # This matches [pihole] in production/hosts
+  become: yes            # Become SUDO
+  roles:
+    - common
+ 
