@@ -34,7 +34,7 @@ autoinstall:
         sudo: ALL=(ALL) NOPASSWD:ALL
         shell: /bin/bash
         ssh_authorized_keys:
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBNXAVfoyiK9yEbDaXywJpLPTUhaCJGkjlTwk7vw0akSv3Tvy9ZiWcrrKo+Vne0al40ljbT7WUqfoN6T7VYne9bjA1195gH2HSZwvszxRKdSjpHccLJZSyWlC4JZEzKqQg0icj42yqhRMhkS0T2IujoBvKofCma/jltyi+eXLJp1lBQPQD8Gi5+FJTwkeNsFHgH+NjRPJ/3GDbjkP1oZTaq2HTMacsPGBOeLmnwTiEVTO021F4SVkbvRLYPStpq0UjwOzQtS7GwW9olgm6OoMkynT63+d8fxdzyzhz8RHVOp3s8DM7FUVJ9XdX7+ziHGJ0ZyNkhl7CjJFQAmULXJ5560yHJ7unAvG7AK9xDl63ss0nNsO5zorUAGq2pTdJvMXQmZaOW/GDU4FnE6qD70hh82tcrMrzIxbOU9vBmkE7iSP52rxL/cRKurvePjAqOW/C9/BLx9Vg7BftkhAyVHY50ItYjyS8KU4hCFOuiWSUdtfQjIgGqyJAysOQEC++NMk= packer
+        - ~/tf-packer.pub
   packages:
     - qemu-guest-agent
     - sudo
