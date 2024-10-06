@@ -93,7 +93,7 @@ services:
       - ${ROOT}/utilityserver/config/bookstack_db_data:/config
     restart: unless-stopped
 
-    home_assistant:
+  home_assistant:
     image: lscr.io/linuxserver/homeassistant:latest
     container_name: home_assistant
     environment:
