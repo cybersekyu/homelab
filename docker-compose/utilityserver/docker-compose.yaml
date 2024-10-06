@@ -100,6 +100,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+    ports:
+      - 8123:8123
     volumes:
       - ${ROOT}/utilityserver/config/homeassistant:/config
     restart: unless-stopped
