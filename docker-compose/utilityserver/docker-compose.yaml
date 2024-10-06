@@ -93,6 +93,16 @@ services:
       - ${ROOT}/utilityserver/config/bookstack_db_data:/config
     restart: unless-stopped
 
+    home_assistant:
+    image: lscr.io/linuxserver/homeassistant:latest
+    container_name: home_assistant
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${ROOT}/utilityserver/config/homeassistant:/config
+    restart: unless-stopped
 
   portainer-ce:
     container_name: portainer
