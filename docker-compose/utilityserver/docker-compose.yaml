@@ -93,18 +93,26 @@ services:
       - ${ROOT}/utilityserver/config/bookstack_db_data:/config
     restart: unless-stopped
 
-  # home_assistant:
-  #   image: lscr.io/linuxserver/homeassistant:latest
-  #   container_name: home_assistant
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   ports:
-  #     - 8123:8123
-  #   volumes:
-  #     - ${ROOT}/utilityserver/config/homeassistant:/config
-  #   restart: unless-stopped
+  omada_controller:
+    image: mbentley/omada-controller:latest
+    container_name: omada_controller
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - MANAGE_HTTP_PORT=8088
+      - MANAGE_HTTPS_PORT=8043
+      - PORTAL_HTTP_PORT=8088
+      - PORTAL_HTTPS_PORT=8043
+      - SHOW_SERVER_LOGS=true
+      - SHOW_MONGODB_LOGS=false
+    ports:
+      - 8088:8088
+      - 8043:8043
+    volumes:
+      - ${ROOT}/utilityserver/config/omada/data:/opt/tplink/EAPController/data
+      - ${ROOT}/utilityserver/config/omada/logs:/opt/tplink/EAPController/logs
+    restart: unless-stopped
 
   portainer-ce:
     container_name: portainer
