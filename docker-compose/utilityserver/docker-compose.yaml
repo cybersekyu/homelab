@@ -107,7 +107,7 @@ services:
       - SHOW_SERVER_LOGS=true
       - SHOW_MONGODB_LOGS=false
     ports:
-      - 8088:8088
+      - 8089:8088
       - 8043:8043
     volumes:
       - ${ROOT}/utilityserver/config/omada/data:/opt/tplink/EAPController/data
