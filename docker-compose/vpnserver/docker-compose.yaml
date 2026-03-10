@@ -27,7 +27,7 @@ services:
 
   deluge:
     container_name: deluge
-    image: linuxserver/deluge:latest
+    image: linuxserver/deluge:2.2.0-r1-ls364
     restart: unless-stopped
     environment:
       - PUID=${PUID}
