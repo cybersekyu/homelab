@@ -10,8 +10,14 @@ services:
     volumes:
       - ${ROOT}/utilityserver/config/heimdall:/config
     ports:
-      - 80:80
-      - 443:443
+      - 8085:8085
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.heimdall.rule=Host(`heimdall.${DNSNAME}`)"
+      - "traefik.http.routers.heimdall.entrypoints=websecure"
+      - "traefik.http.services.heimdall.loadbalancer.server.port=8085"
+    networks:
+      - traefik-local
     restart: unless-stopped
 
   watchtower:
