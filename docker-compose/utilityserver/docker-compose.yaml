@@ -127,7 +127,7 @@ services:
       - "traefik.http.routers.actual.entrypoints=websecure"
       - "traefik.http.services.actual.loadbalancer.server.port=5006"
     networks:
-      - traefik_local
+      - traefik-local
     restart: unless-stopped
 
   traefik:
@@ -167,7 +167,7 @@ services:
       - --entrypoints.websecure.http.tls.domains[0].main=${DNSNAME}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DNSNAME}
     networks:
-      - traefik_local
+      - traefik-local
     labels:
       - traefik.enable=true
       - traefik.http.routers.dashboard.rule=Host(`traefikgen.${DNSNAME}`)
@@ -191,7 +191,7 @@ volumes:
   portainer_data:
 
 networks:
-  traefik_local:
+  traefik-local:
     external: true
 
 
