@@ -37,7 +37,8 @@ services:
       - --entrypoints.websecure.http.tls.domains[0].main=${DNSNAME}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DNSNAME}
     networks:
-      - external_net
+      - external_net # for traefik to access the internet and obtain certificates
+      - internal_net # for traefik to access vaultwarden
     labels:
       - traefik.enable=true
       - traefik.http.routers.dashboard.rule=Host(`traefik.${DNSNAME}`)
@@ -55,7 +56,7 @@ services:
     volumes:
       - ${ROOT}/vaultserver/config/vaultwarden:/data    
     networks:
-      - external_net
+      - internal_net # block vaultwarden from accessing the internet
     labels:
       - traefik.enable=true
       - traefik.http.routers.vaultwarden.rule=Host(`vault.${DNSNAME}`)
