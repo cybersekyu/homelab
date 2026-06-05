@@ -37,7 +37,6 @@ services:
       - --entrypoints.websecure.http.tls.domains[0].main=${DNSNAME}
       - --entrypoints.websecure.http.tls.domains[0].sans=*.${DNSNAME}
     networks:
-      - internal_net
       - external_net
     labels:
       - traefik.enable=true
@@ -63,6 +62,9 @@ services:
       - traefik.http.routers.vaultwarden.entrypoints=websecure
       - traefik.http.services.vaultwarden.loadbalancer.server.port=80
       # - traefik.docker.network=isolated_net
+      # for security, only allow access to vaultwarden from the local network
+      - traefik.http.routers.vaultwarden.middlewares=local-only-ip
+      - traefik.http.middlewares.local-only-ip.ipwhitelist.sourcerange=192.168.1.0/24
     restart: unless-stopped
    
   agent:
