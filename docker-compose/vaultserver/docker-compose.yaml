@@ -55,7 +55,7 @@ services:
     volumes:
       - ${ROOT}/vaultserver/config/vaultwarden:/data    
     networks:
-      - internal_net
+      - external_net
     labels:
       - traefik.enable=true
       - traefik.http.routers.vaultwarden.rule=Host(`vault.${DNSNAME}`)
