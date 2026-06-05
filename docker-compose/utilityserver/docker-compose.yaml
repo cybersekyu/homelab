@@ -10,10 +10,10 @@ services:
     volumes:
       - ${ROOT}/utilityserver/config/heimdall:/config
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.heimdall.rule=Host(`heimdall.${DNSNAME}`)"
-      - "traefik.http.routers.heimdall.entrypoints=websecure"
-      - "traefik.http.services.heimdall.loadbalancer.server.port=80"
+      - traefik.enable=true
+      - traefik.http.routers.heimdall.rule=Host(`heimdall.${DNSNAME}`)
+      - traefik.http.routers.heimdall.entrypoints=websecure
+      - traefik.http.services.heimdall.loadbalancer.server.port=80
     networks:
       - traefik-local
     restart: unless-stopped
@@ -124,10 +124,10 @@ services:
     volumes:
       - ${ROOT}/utilityserver/config/actual:/data
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.actual.rule=Host(`actualbudget.${DNSNAME}`)"
-      - "traefik.http.routers.actual.entrypoints=websecure"
-      - "traefik.http.services.actual.loadbalancer.server.port=5006"
+      - traefik.enable=true
+      - traefik.http.routers.actual.rule=Host(`actualbudget.${DNSNAME}`)
+      - traefik.http.routers.actual.entrypoints=websecure
+      - traefik.http.services.actual.loadbalancer.server.port=5006
     networks:
       - traefik-local
     restart: unless-stopped
