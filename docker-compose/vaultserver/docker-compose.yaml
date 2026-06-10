@@ -62,12 +62,24 @@ services:
       - traefik.http.routers.vaultwarden.rule=Host(`vault.${DNSNAME}`)
       - traefik.http.routers.vaultwarden.entrypoints=websecure
       - traefik.http.services.vaultwarden.loadbalancer.server.port=80
-      # - traefik.docker.network=isolated_net
       # for security, only allow access to vaultwarden from the local network
       - traefik.http.routers.vaultwarden.middlewares=local-only-ip
       - traefik.http.middlewares.local-only-ip.ipwhitelist.sourcerange=192.168.1.0/24
     restart: unless-stopped
-   
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      TZ: ${TZ}
+      WATCHTOWER_SCHEDULE: 0 30 4 * * 6
+      WATCHTOWER_MONITOR_ONLY: "false"
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_NO_STARTUP_MESSAGE: "true"
+      WATCHTOWER_NOTIFICATIONS: "shoutrrr"
+      WATCHTOWER_NOTIFICATION_URL: "discord://${DISTOKEN}@${DISWEBHOOKID}"
+    restart: unless-stopped 
   agent:
     container_name: portainer_agent
     image: portainer/agent:latest
