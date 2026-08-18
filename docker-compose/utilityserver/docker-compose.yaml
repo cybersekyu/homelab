@@ -219,7 +219,7 @@ services:
     restart: unless-stopped
 
   magicframe_db:
-    container_name: magicframedb
+    container_name: magicframe_db
     image: postgres:16-alpine
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
