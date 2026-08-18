@@ -1,21 +1,21 @@
 ---
 services:
-  plex:
-    container_name: plex
-    image: lscr.io/linuxserver/plex:latest
-    network_mode: host
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - VERSION=docker
-    volumes:
-      - ${ROOT}/mediaserver/config/plex/db:/config
-      - ${ROOT}/mediaserver/config/plex/transcode:/transcode
-      - ${HDDSTORAGE}/media/tvshows:/tvshows
-      - ${HDDSTORAGE}/media/movies:/movies
-      - ${HDDSTORAGE}/media/music:/music
-    restart: unless-stopped
+  # plex:
+  #   container_name: plex
+  #   image: lscr.io/linuxserver/plex:latest
+  #   network_mode: host
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #     - VERSION=docker
+  #   volumes:
+  #     - ${ROOT}/mediaserver/config/plex/db:/config
+  #     - ${ROOT}/mediaserver/config/plex/transcode:/transcode
+  #     - ${HDDSTORAGE}/media/tvshows:/tvshows
+  #     - ${HDDSTORAGE}/media/movies:/movies
+  #     - ${HDDSTORAGE}/media/music:/music
+  #   restart: unless-stopped
 
   sonarr:
     container_name: sonarr

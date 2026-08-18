@@ -1,0 +1,80 @@
+---
+services:
+  plex:
+    container_name: plex
+    image: lscr.io/linuxserver/plex:latest
+    network_mode: host
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - VERSION=docker
+    volumes:
+      - ${ROOT}/mediaserver/config/plex/db:/config
+      - ${ROOT}/mediaserver/config/plex/transcode:/transcode
+      - ${HDDSTORAGE}/media/tvshows:/tvshows
+      - ${HDDSTORAGE}/media/movies:/movies
+      - ${HDDSTORAGE}/media/music:/music
+    restart: unless-stopped
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      TZ: ${TZ}
+      WATCHTOWER_SCHEDULE: 0 30 3 * * 6
+      WATCHTOWER_MONITOR_ONLY: "false"
+      WATCHTOWER_ROLLING_RESTART: "true"
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_NO_STARTUP_MESSAGE: "true"
+      WATCHTOWER_NOTIFICATIONS: "shoutrrr"
+      WATCHTOWER_NOTIFICATION_URL: "discord://${DISTOKEN}@${DISWEBHOOKID}"
+    restart: unless-stopped
+
+  agent:
+    container_name: portainer_agent
+    image: portainer/agent:latest
+    ports:
+      - 9001:9001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    restart: always
+
+  litellm-db:
+    image: postgres:16-alpine
+    container_name: litellm-db
+    environment:
+      POSTGRES_DB: litellm
+      POSTGRES_USER: litellm_admin
+      POSTGRES_PASSWORD: ${LITELLM_DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U litellm_admin -d litellm"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  litellm-gateway:
+    image: ghcr.io/berriai/litellm:main-stable
+    container_name: litellm-gateway
+    ports:
+      - "4000:4000"
+    depends_on:
+      litellm-db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://litellm_admin:${LITELLM_DB_PASSWORD}@litellm-db:5432/litellm
+    volumes:
+      - ./litellm-config.yaml:/app/config.yaml
+    command: ["--config", "/app/config.yaml", "--detailed_debug"]
+    restart: always
+
+volumes:
+  pgdata:
