@@ -209,8 +209,7 @@ services:
       - traefik.enable=true
       - traefik.http.routers.magicframe.rule=Host(`magicframe.${DNSNAME}`)
       - traefik.http.routers.magicframe.entrypoints=websecure
-      - traefik.http.services.magicframe.loadbalancer.server.port=8080
-      - traefik.docker.network=utilityserver_traefik-local
+      - traefik.http.services.magicframe.loadbalancer.server.port=3000
     depends_on:
       magicframe_db:
         condition: service_healthy
