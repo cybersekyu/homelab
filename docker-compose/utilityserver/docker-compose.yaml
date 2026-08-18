@@ -215,6 +215,7 @@ services:
         condition: service_healthy
     networks:
       - traefik-local
+      - default
     restart: unless-stopped
 
   magicframe_db:
@@ -241,6 +242,8 @@ volumes:
   magic_pgdata:
 
 networks:
+  default:
+    driver: bridge
   traefik-local:
     driver: bridge
 
