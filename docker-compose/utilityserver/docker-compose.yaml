@@ -44,9 +44,10 @@ services:
       - traefik.http.routers.dashboard.entrypoints=websecure
       - traefik.http.routers.dashboard.service=api@internal
     restart: unless-stopped
+  
   heimdall:
-    image: lscr.io/linuxserver/heimdall:latest
     container_name: heimdall
+    image: lscr.io/linuxserver/heimdall:latest
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -127,8 +128,8 @@ services:
       - bookstack_db
       
   bookstack_db:
-    image: lscr.io/linuxserver/mariadb
     container_name: bookstack_db
+    image: lscr.io/linuxserver/mariadb
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -163,8 +164,8 @@ services:
   #   restart: unless-stopped
 
   actualbudget:
-    image: actualbudget/actual-server:latest
     container_name: actualbudget
+    image: actualbudget/actual-server:latest
     volumes:
       - ${ROOT}/utilityserver/config/actual:/data
     labels:
@@ -187,8 +188,57 @@ services:
       - portainer_data:/data
     restart: always
 
+  magicframe:
+    container_name: magicframe
+    image: ghcr.io/jeremiaa/magic-frame-app:latest
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/magicdashboard?schema=public
+      - NODE_ENV=production
+      - TZ=${TZ}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - COOKIE_SECURE=true
+      - APP_BASE_URL="https://magicframe.${DNSNAME}"
+      - TRUSTED_PROXY_HOPS=1
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+      - OPENWEATHERMAP_API_KEY=${OPENWEATHERMAP_API_KEY:-}
+    volumes:
+      - magic_configs:/app/configs
+      - magic_wallpapers:/app/wallpapers
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.magicframe.rule=Host(`magicframe.${DNSNAME}`)
+      - traefik.http.routers.magicframe.entrypoints=websecure
+      - traefik.http.services.magicframe.loadbalancer.server.port=3000
+    depends_on:
+      magicframe_db:
+        condition: service_healthy
+    networks:
+      - traefik-local
+    restart: unless-stopped
+
+  magicframe_db:
+    container_name: magicframedb
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - TZ=${TZ}
+    volumes:
+      - magic_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
 volumes:
   portainer_data:
+  magic_configs:
+  magic_wallpapers:
+  magic_pgdata:
 
 networks:
   traefik-local:
