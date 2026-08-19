@@ -197,7 +197,7 @@ services:
       - TZ=${TZ}
       - SESSION_SECRET=${SESSION_SECRET}
       - COOKIE_SECURE=true
-      - APP_BASE_URL="https://magicframe.${DNSNAME}"
+      - APP_BASE_URL=https://magicframe.${DNSNAME}
       - TRUSTED_PROXY_HOPS=1
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
