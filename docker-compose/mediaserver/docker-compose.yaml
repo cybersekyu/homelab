@@ -49,6 +49,21 @@ services:
       - 7878:7878
     restart: unless-stopped
 
+  lidarr:
+    container_name: lidarr
+    image: lscr.io/linuxserver/lidarr:latest
+    environment:
+      - PUID=${PUID} 
+      - PGID=${PGID} 
+      - TZ=${TZ} 
+    volumes:
+      - ${ROOT}/mediaserver/config/lidarr:/config
+      - ${HDDSTORAGE}/media/music:/music 
+      - ${HDDSTORAGE}/downloads:/downloads 
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+
   bazarr:
     container_name: bazarr
     image: lscr.io/linuxserver/bazarr:latest
@@ -63,6 +78,24 @@ services:
     ports:
       - 6767:6767
     restart: unless-stopped    
+
+  musicseerr:
+    container_name: musicseerr
+    image: ghcr.io/habirabbu/musicseerr:latest  # Alternatively use habirabbu/musicseerr:latest on Docker Hub
+    environment:
+      - PUID=${PUID} 
+      - PGID=${PGID} 
+      - PORT=8688
+      - TZ=${TZ} 
+    ports:
+      - 8688:8688
+    volumes:
+      - ${ROOT}/mediaserver/config/musicseerr:/app/config  
+      - ${ROOT}/mediaserver/musicseerr/cache:/app/cache    
+      # Optional: If you want to enable local file playback through the web app, 
+      # you can mount your music library path here:
+      - ${HDDSTORAGE}/media/music:/music 
+    restart: unless-stopped
 
   overseerr:
     container_name: seerr
