@@ -79,23 +79,23 @@ services:
       - 6767:6767
     restart: unless-stopped    
 
-  musicseerr:
-    container_name: musicseerr
-    image: ghcr.io/droppedneedle/droppedneedle:latest  # Alternatively use habirabbu/musicseerr:latest on Docker Hub
-    environment:
-      - PUID=${PUID} 
-      - PGID=${PGID} 
-      - PORT=8688
-      - TZ=${TZ} 
-    ports:
-      - 8688:8688
-    volumes:
-      - ${ROOT}/mediaserver/config/musicseerr:/app/config  
-      - ${ROOT}/mediaserver/musicseerr/cache:/app/cache    
-      # Optional: If you want to enable local file playback through the web app, 
-      # you can mount your music library path here:
-      - ${HDDSTORAGE}/media/music:/music 
-    restart: unless-stopped
+  # musicseerr:
+  #   container_name: musicseerr
+  #   image: ghcr.io/droppedneedle/droppedneedle:latest  # Alternatively use habirabbu/musicseerr:latest on Docker Hub
+  #   environment:
+  #     - PUID=${PUID} 
+  #     - PGID=${PGID} 
+  #     - PORT=8688
+  #     - TZ=${TZ} 
+  #   ports:
+  #     - 8688:8688
+  #   volumes:
+  #     - ${ROOT}/mediaserver/config/musicseerr:/app/config  
+  #     - ${ROOT}/mediaserver/musicseerr/cache:/app/cache    
+  #     # Optional: If you want to enable local file playback through the web app, 
+  #     # you can mount your music library path here:
+  #     - ${HDDSTORAGE}/media/music:/music 
+  #   restart: unless-stopped
 
   # ombi:
   #   container_name: ombi
