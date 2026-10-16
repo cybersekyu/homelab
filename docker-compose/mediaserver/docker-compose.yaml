@@ -97,18 +97,18 @@ services:
       - ${HDDSTORAGE}/media/music:/music 
     restart: unless-stopped
 
-  ombi:
-    container_name: ombi
-    image: lscr.io/linuxserver/ombi:latest
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID} 
-      - TZ=${TZ} 
-    volumes:
-      - ${ROOT}/mediaserver/config/ombi:/config 
-    ports:
-      - 3579:3579
-    restart: unless-stopped
+  # ombi:
+  #   container_name: ombi
+  #   image: lscr.io/linuxserver/ombi:latest
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID} 
+  #     - TZ=${TZ} 
+  #   volumes:
+  #     - ${ROOT}/mediaserver/config/ombi:/config 
+  #   ports:
+  #     - 3579:3579
+  #   restart: unless-stopped
 
   overseerr:
     container_name: seerr
