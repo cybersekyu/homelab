@@ -81,7 +81,7 @@ services:
 
   musicseerr:
     container_name: musicseerr
-    image: ghcr.io/habirabbu/musicseerr:latest  # Alternatively use habirabbu/musicseerr:latest on Docker Hub
+    image: ghcr.io/droppedneedle/droppedneedle:latest  # Alternatively use habirabbu/musicseerr:latest on Docker Hub
     environment:
       - PUID=${PUID} 
       - PGID=${PGID} 
